@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FoodShare Network – Login</title>
+  <style>
+    :root {
+      --green-dark: #145a32;
+      --green-main: #1f8a4d;
+      --green-soft: #e8f5e9;
+      --green-soft-2: #f4fbf6;
+      --text-main: #1b1f23;
+      --text-muted: #616a6b;
+      --border-soft: #dfe6e1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      background: linear-gradient(180deg, #e3f2e8 0%, #f7faf8 40%);
+      color: var(--text-main);
+    }
+
+    header {
+      background: linear-gradient(90deg, #0b3d24, #145a32);
+      color: #fff;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+
+    header .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: radial-gradient(circle at 20% 20%, #a5d6a7, #1b5e20);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0.03em;
+    }
+
+    header span {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    main {
+      max-width: 1080px;
+      margin: 40px auto 32px;
+      padding: 0 18px;
+    }
+
+    .shell {
+      background: #fff;
+      border-radius: 16px;
+      padding: 26px 26px 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      border: 1px solid #dde5de;
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 6px;
+      font-size: 26px;
+    }
+
+    p {
+      margin: 6px 0 14px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .form-row {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: #273238;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 9px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      font-size: 14px;
+      outline: none;
+      background: #fcfffd;
+    }
+
+    input:focus {
+      border-color: var(--green-main);
+      box-shadow: 0 0 0 2px rgba(31,138,77,0.18);
+    }
+
+    .roles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
+
+    .role-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid #b9c7bc;
+      font-size: 13px;
+      cursor: pointer;
+      background: #fff;
+      color: #1b3222;
+      transition: all 0.15s ease-out;
+    }
+
+    .role-pill:hover {
+      border-color: var(--green-main);
+      background: #eefaf2;
+    }
+
+    .role-pill.active {
+      border-color: var(--green-main);
+      background: var(--green-main);
+      color: #fff;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 10px 0 16px;
+    }
+
+    button {
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 9px 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.15s ease-out, transform 0.1s ease-out, box-shadow 0.15s ease-out;
+    }
+
+    .btn-primary {
+      background: var(--green-main);
+      color: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.16);
+    }
+
+    .btn-primary:hover {
+      background: #17693b;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .btn-secondary {
+      background: #ecf3ee;
+      color: #1f4d33;
+    }
+
+    .btn-secondary:hover {
+      background: #ddebe2;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .card {
+      background: var(--green-soft-2);
+      border-radius: 12px;
+      padding: 14px 16px 16px;
+      border: 1px solid var(--border-soft);
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      color: #1d3a27;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    footer {
+      margin-top: 16px;
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    footer span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    footer strong {
+      font-weight: 600;
+      color: #273238;
+    }
+
+    @media (max-width: 860px) {
+      .columns {
+        grid-template-columns: 1fr;
+      }
+      .shell {
+        padding: 18px 16px 16px;
+      }
+      main {
+        margin-top: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="brand-logo">F</div>
+    <div>
+      <h1>FoodShare Network</h1>
+      <span>Smart coordination of surplus food donations</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="shell">
+    <h2>Sign in</h2>
+    <p>Select your role and log in to manage donations, requests, and pickups.</p>
+
+    <div class="form-row">
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="you@example.com">
+    </div>
+
+    <div class="form-row">
+      <label for="password">Password</label>
+      <input id="password" type="password" placeholder="Enter your password">
+    </div>
+
+    <div class="form-row">
+      <label>Log in as</label>
+      <div class="roles">
+        <div class="role-pill active">Donor</div>
+        <div class="role-pill">Receiver</div>
+        <div class="role-pill">Volunteer</div>
+        <div class="role-pill">Admin</div>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button class="btn-primary" onclick="location.href='donor_dashboard.html'">
+        Continue as Donor
+      </button>
+      <button class="btn-secondary" onclick="location.href='receiver_dashboard.html'">
+        Continue as Receiver
+      </button>
+      <button class="btn-secondary" onclick="location.href='admin_dashboard.html'">
+        Continue as Admin
+      </button>
+    </div>
+
+    <div class="columns">
+      <div class="card">
+        <h3>Donors</h3>
+        <p>Create and manage surplus food donations from restaurants, groceries, and bakeries.</p>
+      </div>
+      <div class="card">
+        <h3>Receivers</h3>
+        <p>Search, filter, and claim available food for shelters, NGOs, and food banks.</p>
+      </div>
+      <div class="card">
+        <h3>Admins</h3>
+        <p>Monitor activity, validate pickups, and track impact across organizations.</p>
+      </div>
+    </div>
+
+    <footer>
+      <span>Access restricted to authorized FoodShare group members only.</span>
+      <span><strong>Environment:</strong> Demo web interface for database-backed application.</span>
+    </footer>
+  </section>
+</main>
+
+<script>
+  // Small UX touch: toggle active role pill (visual only)
+  const rolePills = document.querySelectorAll('.role-pill');
+  rolePills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      rolePills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

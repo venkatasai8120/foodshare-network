@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FoodShare – Donor Dashboard</title>
+  <style>
+    :root {
+      --green-dark: #145a32;
+      --green-main: #1f8a4d;
+      --green-soft: #e9f7ef;
+      --green-soft-2: #f4fbf6;
+      --border-soft: #dfe6e1;
+      --text-main: #1b1f23;
+      --text-muted: #616a6b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      background: linear-gradient(180deg, #e3f2e8 0%, #f7faf8 45%);
+      color: var(--text-main);
+    }
+
+    header {
+      background: linear-gradient(90deg, #0b3d24, #145a32);
+      color: #fff;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    header span {
+      font-size: 12px;
+      opacity: 0.95;
+    }
+
+    nav a {
+      color: #eaf5ee;
+      text-decoration: none;
+      margin-left: 14px;
+      font-size: 13px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 24px auto 28px;
+      padding: 0 18px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px 18px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.05);
+      border: 1px solid var(--border-soft);
+    }
+
+    .card h2, .card h3 {
+      margin-top: 0;
+      font-size: 18px;
+    }
+
+    .card p {
+      margin-top: 4px;
+      margin-bottom: 10px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 6px 8px;
+      border-bottom: 1px solid #ecf0f1;
+      text-align: left;
+    }
+
+    th {
+      background: #f4fbf6;
+      font-weight: 600;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .status-chip {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .status-available {
+      background: #e8f5e9;
+      color: #1e7b35;
+    }
+
+    .status-reserved {
+      background: #fff3cd;
+      color: #8a6d1f;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 13px;
+      margin: 8px 0 3px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 8px 9px;
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      font-size: 13px;
+      outline: none;
+      background: #fcfffd;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--green-main);
+      box-shadow: 0 0 0 2px rgba(31,138,77,0.16);
+    }
+
+    textarea { resize: vertical; min-height: 60px; }
+
+    .two-col {
+      display: flex;
+      gap: 10px;
+    }
+
+    .two-col > div { flex: 1; }
+
+    button {
+      margin-top: 12px;
+      padding: 9px 15px;
+      border-radius: 999px;
+      border: none;
+      background: var(--green-main);
+      color: #fff;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      transition: background 0.15s ease-out, transform 0.1s ease-out, box-shadow 0.15s ease-out;
+    }
+
+    button:hover {
+      background: #17693b;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+    }
+
+    .pill-strip {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      display: inline-block;
+      margin-bottom: 8px;
+      color: #1b4332;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>FoodShare – Donor Dashboard</h1>
+    <span>GreenLeaf Grocery · Manage active surplus donations</span>
+  </div>
+  <nav>
+    <a href="donor_dashboard.html">Donations</a>
+    <a href="index.html">Sign out</a>
+  </nav>
+</header>
+
+<main>
+  <div class="layout">
+    <section class="card">
+      <h2>Your Donations</h2>
+      <p>Track items that are available, reserved by receivers, or already collected.</p>
+
+      <div class="pill-strip">Organization: GreenLeaf Grocery · City: Boston</div>
+
+      <table>
+        <thead>
+        <tr>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Qty</th>
+          <th>Expires</th>
+          <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Fresh Apples</td>
+          <td>Fruits &amp; Vegetables</td>
+          <td>40 lbs</td>
+          <td>2025-11-25 20:00</td>
+          <td><span class="status-chip status-available">Available</span></td>
+        </tr>
+        <tr>
+          <td>Canned Goods Box</td>
+          <td>Packaged Items</td>
+          <td>60 items</td>
+          <td>2025-12-10 12:00</td>
+          <td><span class="status-chip status-available">Available</span></td>
+        </tr>
+        <tr>
+          <td>Chicken Meals</td>
+          <td>Cooked Food</td>
+          <td>25 portions</td>
+          <td>2025-11-23 18:00</td>
+          <td><span class="status-chip status-reserved">Reserved</span></td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h3>Create New Donation</h3>
+      <p>Register a new surplus food item so nearby receivers can claim it.</p>
+
+      <form>
+        <label for="title">Title</label>
+        <input id="title" type="text" placeholder="e.g. Surplus Veggie Packs">
+
+        <label for="category">Category</label>
+        <select id="category">
+          <option>Cooked Food</option>
+          <option>Packaged Items</option>
+          <option>Fruits &amp; Vegetables</option>
+          <option>Bakery Items</option>
+        </select>
+
+        <div class="two-col">
+          <div>
+            <label for="qty">Quantity</label>
+            <input id="qty" type="number" placeholder="e.g. 20">
+          </div>
+          <div>
+            <label for="unit">Unit</label>
+            <input id="unit" type="text" placeholder="kg, lbs, portions">
+          </div>
+        </div>
+
+        <label for="expires">Expires at</label>
+        <input id="expires" type="datetime-local">
+
+        <label for="address">Pickup location</label>
+        <textarea id="address" placeholder="123 Market St, Boston, MA"></textarea>
+
+        <button type="button">Save donation (mock)</button>
+      </form>
+    </section>
+  </div>
+</main>
+</body>
+</html>

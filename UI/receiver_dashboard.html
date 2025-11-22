@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FoodShare – Receiver Dashboard</title>
+  <style>
+    :root {
+      --green-dark: #145a32;
+      --green-main: #1f8a4d;
+      --green-soft: #e8f5e9;
+      --border-soft: #dfe6e1;
+      --text-main: #1b1f23;
+      --text-muted: #616a6b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      background: linear-gradient(180deg, #e3f2e8 0%, #f7faf8 45%);
+      color: var(--text-main);
+    }
+    header {
+      background: linear-gradient(90deg, #0b3d24, #145a32);
+      color: #fff;
+      padding: 14px 24px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      box-shadow:0 2px 6px rgba(0,0,0,0.25);
+    }
+    header h1 { margin:0; font-size:20px; }
+    header span { font-size:12px; opacity:0.95; }
+    nav a {
+      color:#eaf5ee;
+      text-decoration:none;
+      margin-left:14px;
+      font-size:13px;
+    }
+    nav a:hover { text-decoration:underline; }
+
+    main { max-width:1120px; margin:24px auto 28px; padding:0 18px; }
+
+    .layout { display:grid; grid-template-columns: 3fr 2fr; gap:18px; align-items:flex-start; }
+
+    .card {
+      background:#fff;
+      border-radius:14px;
+      padding:16px 18px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.05);
+      border:1px solid var(--border-soft);
+    }
+
+    .card h2, .card h3 { margin-top:0; font-size:18px; }
+    .card p { margin-top:4px; margin-bottom:10px; font-size:13px; color:var(--text-muted); }
+
+    .filters { display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+    select, input {
+      padding:7px 9px;
+      border-radius:999px;
+      border:1px solid var(--border-soft);
+      font-size:13px;
+      outline:none;
+      background:#fcfffd;
+    }
+    select:focus, input:focus {
+      border-color:var(--green-main);
+      box-shadow:0 0 0 2px rgba(31,138,77,0.16);
+    }
+    button {
+      padding:8px 16px;
+      border-radius:999px;
+      border:none;
+      background:var(--green-main);
+      color:#fff;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 2px 6px rgba(0,0,0,0.15);
+      transition:background 0.15s ease-out, transform 0.1s ease-out, box-shadow 0.15s ease-out;
+    }
+    button:hover {
+      background:#17693b;
+      transform:translateY(-1px);
+      box-shadow:0 4px 10px rgba(0,0,0,0.18);
+    }
+
+    table {
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+      background:#fff;
+    }
+    th, td {
+      padding:6px 8px;
+      border-bottom:1px solid #ecf0f1;
+      text-align:left;
+    }
+    th {
+      background:#f4fbf6;
+      font-weight:600;
+    }
+    tr:last-child td { border-bottom:none; }
+
+    .row-urgent { background:#fff8e1; }
+    .badge-urgent {
+      background:#ffb74d;
+      color:#5d3a00;
+      border-radius:999px;
+      padding:2px 7px;
+      font-size:11px;
+      font-weight:600;
+    }
+
+    ul { margin:0; padding-left:18px; font-size:13px; color:var(--text-muted); }
+    li + li { margin-top:4px; }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>FoodShare – Receiver Dashboard</h1>
+    <span>Sunrise Community Shelter · Claim surplus food from nearby donors</span>
+  </div>
+  <nav>
+    <a href="receiver_dashboard.html">Available donations</a>
+    <a href="index.html">Sign out</a>
+  </nav>
+</header>
+
+<main>
+  <div class="layout">
+    <section class="card">
+      <h2>Available Donations</h2>
+      <p>Filter donations by category and city, then submit a claim for items that match your needs.</p>
+
+      <div class="filters">
+        <select>
+          <option>All categories</option>
+          <option>Cooked Food</option>
+          <option>Packaged Items</option>
+          <option>Fruits &amp; Vegetables</option>
+          <option>Bakery Items</option>
+        </select>
+        <input type="text" placeholder="City (e.g. Boston)">
+        <button type="button">Search (mock)</button>
+      </div>
+
+      <table>
+        <thead>
+        <tr>
+          <th>Title</th>
+          <th>Donor</th>
+          <th>Category</th>
+          <th>Qty</th>
+          <th>Expires</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="row-urgent">
+          <td>Chicken Meals</td>
+          <td>FreshBite Restaurant</td>
+          <td>Cooked Food</td>
+          <td>25 portions</td>
+          <td>2025-11-23 18:00 <span class="badge-urgent">Urgent</span></td>
+          <td><button type="button">Request</button></td>
+        </tr>
+        <tr>
+          <td>Fresh Apples</td>
+          <td>GreenLeaf Grocery</td>
+          <td>Fruits &amp; Vegetables</td>
+          <td>40 lbs</td>
+          <td>2025-11-25 20:00</td>
+          <td><button type="button">Request</button></td>
+        </tr>
+        <tr>
+          <td>Canned Goods Box</td>
+          <td>GreenLeaf Grocery</td>
+          <td>Packaged Items</td>
+          <td>60 items</td>
+          <td>2025-12-10 12:00</td>
+          <td><button type="button">Request</button></td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h3>Your recent requests</h3>
+      <p>Summary of claims submitted by Sunrise Community Shelter.</p>
+      <ul>
+        <li>Chicken Meals – <strong>Approved</strong> · Pickup scheduled</li>
+        <li>Fresh Apples – <strong>Pending</strong> · Awaiting donor confirmation</li>
+        <li>Canned Goods Box – <strong>Pending</strong> · Submitted today</li>
+      </ul>
+
+      <hr style="border:0;border-top:1px solid #ecf0f1;margin:14px 0;">
+
+      <h3>Next pickup</h3>
+      <p>
+        <strong>Item:</strong> Chicken Meals (25 portions)<br>
+        <strong>From:</strong> FreshBite Restaurant, Cambridge<br>
+        <strong>To:</strong> Sunrise Community Shelter, Boston<br>
+        <strong>Volunteer:</strong> Sarah Mitchell<br>
+        <strong>Pickup time:</strong> 2025-11-22 14:30
+      </p>
+    </section>
+  </div>
+</main>
+</body>
+</html>
