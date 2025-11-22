@@ -1,207 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>FoodShare – Admin Dashboard</title>
-  <style>
-    :root {
-      --green-dark: #145a32;
-      --green-main: #1f8a4d;
-      --green-soft: #e8f5e9;
-      --border-soft: #dfe6e1;
-      --text-main: #1b1f23;
-      --text-muted: #616a6b;
-    }
-    * { box-sizing:border-box; }
-    body {
-      margin:0;
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-      background:linear-gradient(180deg,#e3f2e8 0%,#f7faf8 45%);
-      color:var(--text-main);
-    }
-    header{
-      background:linear-gradient(90deg,#0b3d24,#145a32);
-      color:#fff;
-      padding:14px 24px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      box-shadow:0 2px 6px rgba(0,0,0,0.25);
-    }
-    header h1{margin:0;font-size:20px;}
-    header span{font-size:12px;opacity:0.95;}
-    nav a{
-      color:#eaf5ee;
-      text-decoration:none;
-      margin-left:14px;
-      font-size:13px;
-    }
-    nav a:hover{ text-decoration:underline; }
+    <meta charset="UTF-8">
+    <title>FoodShare – Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; background: #f1f1f1; }
+        header {
+            background: #222;
+            color: white;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 { margin: 0; font-size: 20px; }
+        header span { font-size: 13px; opacity: 0.9; }
 
-    main{max-width:1120px;margin:24px auto 32px;padding:0 18px;}
+        .logout-btn {
+            background: #ffffff;
+            color: #222;
+            padding: 6px 12px;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .logout-btn:hover { background: #e3e3e3; }
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-      gap:16px;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto 40px;
+            padding: 0 16px;
+        }
 
-    .card{
-      background:#fff;
-      border-radius:14px;
-      padding:16px 18px;
-      box-shadow:0 10px 24px rgba(0,0,0,0.05);
-      border:1px solid var(--border-soft);
-    }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .card {
+            background: white;
+            padding: 16px 18px;
+            border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+        }
+        .card h2 {
+            margin: 0 0 8px;
+            font-size: 16px;
+            color: #222;
+        }
+        .metric {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+        }
 
-    .card h2,.card h3{margin-top:0;font-size:17px;}
-    .card p{margin-top:4px;margin-bottom:10px;font-size:13px;color:var(--text-muted);}
+        .section-card {
+            background: white;
+            padding: 16px 18px;
+            border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+            margin-top: 18px;
+        }
+        .section-card h2 {
+            margin: 0 0 8px;
+            font-size: 17px;
+            color: #222;
+        }
 
-    .metric{
-      font-size:28px;
-      font-weight:700;
-      color:var(--green-dark);
-      margin-bottom:4px;
-    }
-    .metric-label{
-      font-size:12px;
-      color:var(--text-muted);
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background: #e3e3e3;
+            color: #222;
+            font-weight: 600;
+        }
 
-    table{
-      width:100%;
-      border-collapse:collapse;
-      font-size:13px;
-      margin-top:8px;
-    }
-    th,td{
-      padding:6px 8px;
-      border-bottom:1px solid #ecf0f1;
-      text-align:left;
-    }
-    th{
-      background:#f4fbf6;
-      font-weight:600;
-    }
-    tr:last-child td{border-bottom:none;}
-
-    .pill{
-      display:inline-block;
-      padding:3px 8px;
-      border-radius:999px;
-      background:var(--green-soft);
-      font-size:11px;
-      color:#1b4332;
-      margin-right:4px;
-      margin-bottom:4px;
-    }
-
-    @media (max-width: 700px){
-      header{flex-direction:column;align-items:flex-start;gap:4px;}
-    }
-  </style>
+        .footer-credit {
+            text-align: center;
+            font-size: 12px;
+            color: #555;
+            margin: 10px 0 16px;
+        }
+        .footer-credit b { color: #1f6f43; }
+    </style>
 </head>
 <body>
+
 <header>
-  <div>
-    <h1>FoodShare – Admin Dashboard</h1>
-    <span>System overview · Donations, claims, pickups, and organizations</span>
-  </div>
-  <nav>
-    <a href="admin_dashboard.html">Dashboard</a>
-    <a href="index.html">Sign out</a>
-  </nav>
+    <div>
+        <h1>FoodShare Network</h1>
+        <span>Admin Dashboard</span>
+    </div>
+    <button class="logout-btn" onclick="logout()">Logout</button>
 </header>
 
-<main>
-  <section class="grid">
-    <div class="card">
-      <h3>Total donations</h3>
-      <div class="metric">3</div>
-      <div class="metric-label">Records stored in the FoodShare database</div>
-    </div>
-    <div class="card">
-      <h3>Total claims</h3>
-      <div class="metric">3</div>
-      <div class="metric-label">Requests submitted by receiver organizations</div>
-    </div>
-    <div class="card">
-      <h3>Completed pickups</h3>
-      <div class="metric">1</div>
-      <div class="metric-label">Deliveries marked as successfully completed</div>
-    </div>
-    <div class="card">
-      <h3>Active organizations</h3>
-      <div class="metric">5</div>
-      <div class="metric-label">Donors, receivers, shelters, NGOs, and food banks</div>
-    </div>
-  </section>
+<div class="container">
 
-  <section class="card" style="margin-top:20px;">
-    <h2>Most active donors</h2>
-    <p>Ranking based on the number of donations created.</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Organization</th>
-          <th>Type</th>
-          <th>Total donations</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>GreenLeaf Grocery</td>
-          <td>Grocery</td>
-          <td>2</td>
-        </tr>
-        <tr>
-          <td>FreshBite Restaurant</td>
-          <td>Restaurant</td>
-          <td>1</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section class="card" style="margin-top:20px;">
-    <h2>Donations by category</h2>
-    <p>Distribution of donations across food categories.</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>Number of donations</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Fruits &amp; Vegetables</td>
-          <td>1</td>
-        </tr>
-        <tr>
-          <td>Cooked Food</td>
-          <td>1</td>
-        </tr>
-        <tr>
-          <td>Packaged Items</td>
-          <td>1</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section class="card" style="margin-top:20px;">
-    <h2>Environment & access</h2>
-    <p>
-      This dashboard visualizes data managed by the FoodShare relational database schema.
-      Access is intended for authorized group members who oversee system configuration and reporting.
-    </p>
-    <div>
-      <span class="pill">Role: Admin</span>
-      <span class="pill">Scope: Organization-level analytics</span>
-      <span class="pill">Data source: MySQL · food_donation</span>
+    <div class="cards">
+        <div class="card">
+            <h2>Total Donations</h2>
+            <div class="metric" id="totalDonations">3</div>
+        </div>
+        <div class="card">
+            <h2>Active Donors</h2>
+            <div class="metric" id="activeDonors">2</div>
+        </div>
+        <div class="card">
+            <h2>Active Receivers</h2>
+            <div class="metric" id="activeReceivers">2</div>
+        </div>
+        <div class="card">
+            <h2>Completed Pickups</h2>
+            <div class="metric" id="completedPickups">2</div>
+        </div>
     </div>
-  </section>
-</main>
+
+    <div class="section-card">
+        <h2>Top Donor Organizations (Sample Data)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Organization</th>
+                    <th>Total Donations</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GreenLeaf Grocery</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>FreshBite Restaurant</td>
+                    <td>1</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section-card">
+        <h2>Top Receiver Organizations (Sample Data)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Organization</th>
+                    <th>Total Claims</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Sunrise Community Shelter</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>Healthy Harvest Center</td>
+                    <td>1</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section-card">
+        <h2>Recent Activity (Sample Data)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Action</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2025-11-22 15:00</td>
+                    <td>Pickup Completed</td>
+                    <td>Chicken Meals → Sunrise Community Shelter</td>
+                </tr>
+                <tr>
+                    <td>2025-11-21 10:15</td>
+                    <td>Claim Created</td>
+                    <td>Fresh Apples → Sunrise Community Shelter</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<p class="footer-credit">
+    Powered by <b>PVSR</b>
+</p>
+
+<script>
+function getTokenOrRedirect() {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        window.location.href = "index.html";
+    }
+    return token;
+}
+
+function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "index.html";
+}
+
+window.onload = () => {
+    getTokenOrRedirect();
+    console.log("Admin dashboard loaded. Connect metrics to reporting APIs later.");
+};
+</script>
+
 </body>
 </html>

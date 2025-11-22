@@ -1,45 +1,65 @@
-# backend/schemas.py
-from pydantic import BaseModel, EmailStr
-from typing import List, Optional
+# Backend/schemas.py
+from pydantic import BaseModel
+from datetime import datetime
+from typing import Optional
 
+# -------------------------
+# USER SCHEMAS
+# -------------------------
 
-class Role(BaseModel):
-    role_name: str
-
-    class Config:
-        orm_mode = True
-
-
-class UserBase(BaseModel):
+class UserCreate(BaseModel):
     full_name: str
-    email: EmailStr
-    phone: Optional[str] = None
-
-
-class UserCreate(UserBase):
+    email: str
+    phone: str
     password: str
-    roles: Optional[List[str]] = ["DONOR"]
+    role: str
 
+class UserLogin(BaseModel):
+    email: str
+    password: str
 
-class UserOut(UserBase):
+class UserOut(BaseModel):
     user_id: int
+    full_name: str
+    email: str
+    phone: str
     is_active: str
-    roles: List[Role] = []
 
     class Config:
         orm_mode = True
-
 
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
 
+# -------------------------
+# DONATION SCHEMAS
+# -------------------------
 
-class TokenData(BaseModel):
-    user_id: Optional[int] = None
-    email: Optional[str] = None
+class DonationCreate(BaseModel):
+    category_id: int
+    description: str
+    quantity: float
+    unit: str
+    expires_at: datetime
+    pickup_address: str
+    city: str
+    state: str
+    zip_code: str
 
+class DonationOut(BaseModel):
+    donation_id: int
+    donor_user_id: int
+    category_id: int
+    description: str
+    quantity: float
+    unit: str
+    status: str
+    expires_at: datetime
+    pickup_address: str
+    city: str
+    state: str
+    zip_code: str
 
-class LoginRequest(BaseModel):
-    email: EmailStr
-    password: str
+    class Config:
+        orm_mode = True

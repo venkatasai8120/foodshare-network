@@ -1,33 +1,44 @@
-# backend/routers/donations.py
-from fastapi import APIRouter, Depends
+# Backend/routers/donations.py
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import List
 
-from ..deps import get_db, get_current_user
-from .. import models
+from Backend.models import Donation
+from Backend.schemas import DonationOut, DonationCreate
+from Backend.deps import get_db
 
-router = APIRouter(prefix="/donations", tags=["Donations"])
+router = APIRouter(tags=["Donations"])
+
+@router.get("/available", response_model=list[DonationOut])
+def list_available_donations(db: Session = Depends(get_db)):
+    donations = (
+        db.query(Donation)
+        .filter(Donation.status == "AVAILABLE")
+        .order_by(Donation.expires_at)
+        .all()
+    )
+    return donations
 
 
-@router.get("/", summary="List all donations (simple example)")
-def list_donations(
-    db: Session = Depends(get_db),
-    current_user: models.User = Depends(get_current_user),
-):
-    """
-    Example endpoint that requires a valid JWT token.
-    For now it just returns basic fields from Donation.
-    """
-    donations = db.execute(
-        "SELECT donation_id, title, quantity, unit, status FROM Donation"
-    ).fetchall()
-    return [
-        {
-            "donation_id": row.donation_id,
-            "title": row.title,
-            "quantity": float(row.quantity),
-            "unit": row.unit,
-            "status": row.status,
-        }
-        for row in donations
-    ]
+@router.post("/create", response_model=DonationOut)
+def create_donation(payload: DonationCreate, db: Session = Depends(get_db)):
+    try:
+        donation = Donation(
+            donor_user_id=1, # Replace with token later
+            category_id=payload.category_id,
+            description=payload.description,
+            quantity=payload.quantity,
+            unit=payload.unit,
+            expires_at=payload.expires_at,
+            pickup_address=payload.pickup_address,
+            city=payload.city,
+            state=payload.state,
+            zip_code=payload.zip_code,
+            status="AVAILABLE"
+        )
+        db.add(donation)
+        db.commit()
+        db.refresh(donation)
+        return donation
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

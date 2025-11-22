@@ -1,29 +1,31 @@
-# backend/main.py
+# Backend/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import auth, donations
+from Backend.database import Base, engine
+from Backend.routers import auth, donations
+
+# Create database tables (ONLY RUN ONCE if needed)
+# Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="FoodShare Network API",
-    description="REST API for Food Donation & Redistribution system (FoodShare).",
+    description="REST API for Food Donation & Redistribution",
     version="1.0.0",
 )
 
-# CORS – allow your Codespaces frontend to call the API
-origins = ["*"]  # for demo; restrict later if you want
-
+# Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.include_router(auth.router)
-app.include_router(donations.router)
-
+# Routers
+app.include_router(auth.router, prefix="/auth", tags=["Auth"])
+app.include_router(donations.router, prefix="/donations", tags=["Donations"])
 
 @app.get("/")
 def root():
