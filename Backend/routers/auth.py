@@ -5,9 +5,14 @@ from jose import JWTError, jwt
 
 from Backend.models import User, UserRole
 from Backend.schemas import UserCreate, UserLogin, Token, UserOut
-from Backend.security import verify_password, get_password_hash, create_access_token
-from Backend.deps import get_db 
-
+from Backend.security import (
+    verify_password,
+    get_password_hash,
+    create_access_token,
+    SECRET_KEY,
+    ALGORITHM,
+)
+from Backend.deps import get_db
 
 router = APIRouter()
 
@@ -18,6 +23,7 @@ def get_user_by_email(db: Session, email: str):
 
 @router.post("/register", response_model=UserOut)
 def register_user(payload: UserCreate, db: Session = Depends(get_db)):
+    # 1) check if email already exists
     existing = get_user_by_email(db, payload.email)
     if existing:
         raise HTTPException(
@@ -25,6 +31,7 @@ def register_user(payload: UserCreate, db: Session = Depends(get_db)):
             detail="Email already registered.",
         )
 
+    # 2) create the user
     hashed = get_password_hash(payload.password)
     user = User(
         full_name=payload.full_name,
@@ -34,9 +41,11 @@ def register_user(payload: UserCreate, db: Session = Depends(get_db)):
         is_active="Y",
     )
     db.add(user)
-    db.flush()  # generates user_id
+    db.flush()  # generates user.user_id
 
-    role = UserRole(user_id=user.user_id, role_name=payload.role.upper())
+    # 3) create the role record, store ALL CAPS (DONOR / RECEIVER / VOLUNTEER / ADMIN)
+    role_name = payload.role.upper()
+    role = UserRole(user_id=user.user_id, role_name=role_name)
     db.add(role)
 
     db.commit()
@@ -53,21 +62,24 @@ def login(payload: UserLogin, db: Session = Depends(get_db)):
             detail="Incorrect email or password.",
         )
 
+    # take first role if multiple
     role = None
     if user.roles:
         role = user.roles[0].role_name
 
+    # include role in JWT (in case we need it later)
     access_token = create_access_token(
         data={"sub": str(user.user_id), "email": user.email, "role": role}
     )
-    return Token(access_token=access_token)
+
+    # 👇 return role in the response so JS can redirect by role
+    return Token(access_token=access_token, role=role)
 
 
 @router.get("/me", response_model=UserOut)
 def get_me(token: str, db: Session = Depends(get_db)):
     """
-    Simple /auth/me that takes ?token=... (because we didn't set OAuth2PasswordBearer).
-    Your JS can call: /auth/me?token=STORED_TOKEN.
+    Simple /auth/me that takes ?token=... (for debugging or future use).
     """
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])

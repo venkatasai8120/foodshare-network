@@ -1,226 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>FoodShare – Admin Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>
-        body { margin: 0; font-family: Arial, sans-serif; background: #f1f1f1; }
-        header {
-            background: #222;
-            color: white;
-            padding: 12px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        header h1 { margin: 0; font-size: 20px; }
-        header span { font-size: 13px; opacity: 0.9; }
-
-        .logout-btn {
-            background: #ffffff;
-            color: #222;
-            padding: 6px 12px;
-            border-radius: 16px;
-            border: none;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .logout-btn:hover { background: #e3e3e3; }
-
-        .container {
-            max-width: 1200px;
-            margin: 20px auto 40px;
-            padding: 0 16px;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-        .card {
-            background: white;
-            padding: 16px 18px;
-            border-radius: 10px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-        }
-        .card h2 {
-            margin: 0 0 8px;
-            font-size: 16px;
-            color: #222;
-        }
-        .metric {
-            font-size: 22px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .section-card {
-            background: white;
-            padding: 16px 18px;
-            border-radius: 10px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-            margin-top: 18px;
-        }
-        .section-card h2 {
-            margin: 0 0 8px;
-            font-size: 17px;
-            color: #222;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-            margin-top: 8px;
-        }
-        th, td {
-            padding: 8px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
-        th {
-            background: #e3e3e3;
-            color: #222;
-            font-weight: 600;
-        }
-
-        .footer-credit {
-            text-align: center;
-            font-size: 12px;
-            color: #555;
-            margin: 10px 0 16px;
-        }
-        .footer-credit b { color: #1f6f43; }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard - FoodShare Network</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #eef2f3;
+    }
+    header {
+      background: #1f6f43;
+      color: #fff;
+      padding: 16px 24px;
+    }
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .top-row button {
+      width: auto;
+      padding: 8px 14px;
+      margin-top: 0;
+      font-size: 14px;
+      background: #b22222;
+      border: none;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .top-row button:hover {
+      background: #8b0000;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 24px auto;
+      background: #fff;
+      padding: 24px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-top: 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      font-size: 14px;
+    }
+    th {
+      background: #f5f5f5;
+    }
+    footer {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 13px;
+      color: #555;
+    }
+    footer span {
+      color: #1f6f43;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-
-<header>
-    <div>
-        <h1>FoodShare Network</h1>
-        <span>Admin Dashboard</span>
+  <header>
+    <div class="top-row">
+      <h1>Admin Dashboard</h1>
+      <button onclick="logout()">Logout</button>
     </div>
-    <button class="logout-btn" onclick="logout()">Logout</button>
-</header>
+  </header>
 
-<div class="container">
+  <div class="container">
+    <h2>All Available Donations (Read-only)</h2>
+    <p>In a real app, admin can manage users, organizations, roles, etc. For now this shows all donations with status AVAILABLE.</p>
 
-    <div class="cards">
-        <div class="card">
-            <h2>Total Donations</h2>
-            <div class="metric" id="totalDonations">3</div>
-        </div>
-        <div class="card">
-            <h2>Active Donors</h2>
-            <div class="metric" id="activeDonors">2</div>
-        </div>
-        <div class="card">
-            <h2>Active Receivers</h2>
-            <div class="metric" id="activeReceivers">2</div>
-        </div>
-        <div class="card">
-            <h2>Completed Pickups</h2>
-            <div class="metric" id="completedPickups">2</div>
-        </div>
-    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Description</th>
+          <th>Qty</th>
+          <th>Unit</th>
+          <th>City</th>
+          <th>State</th>
+          <th>Expires</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="donationsBody"></tbody>
+    </table>
 
-    <div class="section-card">
-        <h2>Top Donor Organizations (Sample Data)</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Organization</th>
-                    <th>Total Donations</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>GreenLeaf Grocery</td>
-                    <td>2</td>
-                </tr>
-                <tr>
-                    <td>FreshBite Restaurant</td>
-                    <td>1</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <footer>
+      Powered by <span>PVSR</span>
+    </footer>
+  </div>
 
-    <div class="section-card">
-        <h2>Top Receiver Organizations (Sample Data)</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Organization</th>
-                    <th>Total Claims</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Sunrise Community Shelter</td>
-                    <td>2</td>
-                </tr>
-                <tr>
-                    <td>Healthy Harvest Center</td>
-                    <td>1</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="section-card">
-        <h2>Recent Activity (Sample Data)</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Time</th>
-                    <th>Action</th>
-                    <th>Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>2025-11-22 15:00</td>
-                    <td>Pickup Completed</td>
-                    <td>Chicken Meals → Sunrise Community Shelter</td>
-                </tr>
-                <tr>
-                    <td>2025-11-21 10:15</td>
-                    <td>Claim Created</td>
-                    <td>Fresh Apples → Sunrise Community Shelter</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-</div>
-
-<p class="footer-credit">
-    Powered by <b>PVSR</b>
-</p>
-
-<script>
-function getTokenOrRedirect() {
-    const token = localStorage.getItem("token");
-    if (!token) {
+  <script>
+    function ensureAdmin() {
+      const token = localStorage.getItem("token");
+      const role = (localStorage.getItem("role") || "").toUpperCase();
+      if (!token) {
+        alert("Please login first.");
         window.location.href = "index.html";
+        return;
+      }
+      if (role !== "ADMIN") {
+        alert("This page is for Admins only.");
+        window.location.href = "index.html";
+      }
     }
-    return token;
-}
 
-function logout() {
-    localStorage.removeItem("token");
-    window.location.href = "index.html";
-}
+    async function loadAvailableDonations() {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/donations/available");
+        const data = await response.json();
 
-window.onload = () => {
-    getTokenOrRedirect();
-    console.log("Admin dashboard loaded. Connect metrics to reporting APIs later.");
-};
-</script>
+        const body = document.getElementById("donationsBody");
+        body.innerHTML = "";
 
+        if (!Array.isArray(data) || data.length === 0) {
+          const row = document.createElement("tr");
+          const cell = document.createElement("td");
+          cell.colSpan = 8;
+          cell.textContent = "No donations available.";
+          row.appendChild(cell);
+          body.appendChild(row);
+          return;
+        }
+
+        data.forEach((d) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${d.donation_id}</td>
+            <td>${d.description || ""}</td>
+            <td>${d.quantity}</td>
+            <td>${d.unit}</td>
+            <td>${d.city || ""}</td>
+            <td>${d.state || ""}</td>
+            <td>${d.expires_at}</td>
+            <td>${d.status}</td>
+          `;
+          body.appendChild(row);
+        });
+      } catch (err) {
+        console.error(err);
+        alert("Could not load donations.");
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      window.location.href = "index.html";
+    }
+
+    ensureAdmin();
+    loadAvailableDonations();
+  </script>
 </body>
 </html>

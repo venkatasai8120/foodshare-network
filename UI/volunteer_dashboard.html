@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Receiver Dashboard - FoodShare Network</title>
+  <title>Volunteer Dashboard - FoodShare Network</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
@@ -14,9 +14,6 @@
       background: #1f6f43;
       color: #fff;
       padding: 16px 24px;
-    }
-    header h1 {
-      margin: 0;
     }
     .top-row {
       display: flex;
@@ -44,6 +41,9 @@
       padding: 24px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-top: 0;
     }
     table {
       width: 100%;
@@ -73,30 +73,32 @@
 <body>
   <header>
     <div class="top-row">
-      <h1>Receiver Dashboard</h1>
+      <h1>Volunteer Dashboard</h1>
       <button onclick="logout()">Logout</button>
     </div>
   </header>
 
   <div class="container">
-    <h2>Available Donations</h2>
-    <p>These donations have status <strong>AVAILABLE</strong> in the system.</p>
+    <h2>Available Donations to Pickup</h2>
+    <p>
+      In a full app, volunteers would see pickup assignments.
+      For now, you can see all donations with status <strong>AVAILABLE</strong>.
+    </p>
 
     <table>
       <thead>
         <tr>
           <th>ID</th>
           <th>Description</th>
-          <th>Quantity</th>
+          <th>Qty</th>
           <th>Unit</th>
+          <th>Pickup Address</th>
           <th>City</th>
           <th>State</th>
-          <th>Expires At</th>
+          <th>Expires</th>
         </tr>
       </thead>
-      <tbody id="donationsBody">
-        <!-- Rows will be inserted here using JS -->
-      </tbody>
+      <tbody id="donationsBody"></tbody>
     </table>
 
     <footer>
@@ -105,7 +107,7 @@
   </div>
 
   <script>
-    function ensureLoggedIn() {
+    function ensureVolunteer() {
       const token = localStorage.getItem("token");
       const role = (localStorage.getItem("role") || "").toUpperCase();
       if (!token) {
@@ -113,9 +115,8 @@
         window.location.href = "index.html";
         return;
       }
-      if (role !== "RECEIVER" && role !== "ADMIN") {
-        // admin can also view this if you like
-        alert("This page is for Receivers.");
+      if (role !== "VOLUNTEER") {
+        alert("This page is for Volunteers only.");
         window.location.href = "index.html";
       }
     }
@@ -131,7 +132,7 @@
         if (!Array.isArray(data) || data.length === 0) {
           const row = document.createElement("tr");
           const cell = document.createElement("td");
-          cell.colSpan = 7;
+          cell.colSpan = 8;
           cell.textContent = "No donations available.";
           row.appendChild(cell);
           body.appendChild(row);
@@ -140,12 +141,12 @@
 
         data.forEach((d) => {
           const row = document.createElement("tr");
-
           row.innerHTML = `
             <td>${d.donation_id}</td>
             <td>${d.description || ""}</td>
             <td>${d.quantity}</td>
             <td>${d.unit}</td>
+            <td>${d.pickup_address || ""}</td>
             <td>${d.city || ""}</td>
             <td>${d.state || ""}</td>
             <td>${d.expires_at}</td>
@@ -164,7 +165,7 @@
       window.location.href = "index.html";
     }
 
-    ensureLoggedIn();
+    ensureVolunteer();
     loadAvailableDonations();
   </script>
 </body>

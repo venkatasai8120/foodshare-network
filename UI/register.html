@@ -1,192 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FoodShare Network – Register</title>
-
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: url('https://images.unsplash.com/photo-1515003197210-e0cd71810b5f')
-                no-repeat center center/cover;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .register-container {
-            background: rgba(255, 255, 255, 0.96);
-            padding: 32px 35px;
-            border-radius: 12px;
-            width: 380px;
-            box-shadow: 0px 0px 22px rgba(0,0,0,0.25);
-        }
-
-        h1 {
-            text-align: center;
-            margin: 0 0 6px;
-            color: #1f6f43;
-        }
-
-        h2 {
-            text-align: center;
-            margin: 0 0 20px;
-            font-size: 15px;
-            color: #444;
-        }
-
-        label {
-            font-size: 14px;
-            color: #333;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 9px;
-            margin-top: 5px;
-            margin-bottom: 16px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            padding: 11px;
-            background: #1f6f43;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 15px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #185735;
-        }
-
-        .link-row {
-            margin-top: 10px;
-            font-size: 13px;
-            text-align: center;
-        }
-
-        .link-row a {
-            color: #1f6f43;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        .link-row a:hover {
-            text-decoration: underline;
-        }
-
-        .footer-credit {
-            text-align: center;
-            margin-top: 16px;
-            font-size: 12px;
-            color: #555;
-        }
-
-        .footer-credit b {
-            color: #1f6f43;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>FoodShare Network – Register</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url("https://images.unsplash.com/photo-1514996937319-344454492b37")
+        no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.96);
+      padding: 40px;
+      border-radius: 12px;
+      width: 380px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.25);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 6px;
+      color: #1f6f43;
+    }
+    h2 {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 25px;
+      font-size: 16px;
+      color: #555;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #333;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 18px;
+      width: 100%;
+      padding: 12px;
+      background: #1f6f43;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #165132;
+    }
+    .link-row {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 13px;
+    }
+    .link-row a {
+      color: #1f6f43;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .link-row a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 12px;
+      color: #555;
+    }
+    footer span {
+      color: #1f6f43;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-
-<div class="register-container">
+  <div class="card">
     <h1>FoodShare Network</h1>
     <h2>Create an Account</h2>
 
-    <label for="full_name">Full Name</label>
-    <input type="text" id="full_name" placeholder="Enter your full name" />
+    <form onsubmit="registerUser(event)">
+      <label>Full Name</label>
+      <input type="text" id="full_name" required placeholder="Enter your full name" />
 
-    <label for="email">Email</label>
-    <input type="email" id="email" placeholder="Enter your email" />
+      <label>Email</label>
+      <input type="email" id="email" required placeholder="Enter your email" />
 
-    <label for="phone">Phone</label>
-    <input type="text" id="phone" placeholder="Enter your phone number" />
+      <label>Phone</label>
+      <input type="text" id="phone" required placeholder="Enter your phone number" />
 
-    <label for="role">Select Role</label>
-    <select id="role">
+      <label>Select Role</label>
+      <select id="role">
         <option value="DONOR">Donor</option>
         <option value="RECEIVER">Receiver</option>
         <option value="VOLUNTEER">Volunteer</option>
-    </select>
+        <!-- ADMIN can be inserted directly in DB if you don't want open signup -->
+      </select>
 
-    <label for="password">Password</label>
-    <input type="password" id="password" placeholder="Create a password" />
+      <label>Password</label>
+      <input
+        type="password"
+        id="password"
+        required
+        placeholder="Enter password"
+      />
 
-    <label for="confirm_password">Confirm Password</label>
-    <input type="password" id="confirm_password" placeholder="Confirm password" />
+      <label>Confirm Password</label>
+      <input
+        type="password"
+        id="confirm_password"
+        required
+        placeholder="Confirm password"
+      />
 
-    <button onclick="registerUser()">Register</button>
+      <button type="submit">Register</button>
+    </form>
 
     <div class="link-row">
-        Already have an account? <a href="index.html">Back to Login</a>
+      Already have an account?
+      <a href="index.html">Back to Login</a>
     </div>
 
-    <p class="footer-credit">
-        Powered by <b>PVSR</b>
-    </p>
-</div>
+    <footer>
+      Powered by <span>PVSR</span>
+    </footer>
+  </div>
 
-<script>
-    async function registerUser() {
-        const full_name = document.getElementById("full_name").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const phone = document.getElementById("phone").value.trim();
-        const role = document.getElementById("role").value;
-        const password = document.getElementById("password").value;
-        const confirm_password = document.getElementById("confirm_password").value;
+  <script>
+    async function registerUser(event) {
+      event.preventDefault();
 
-        if (!full_name || !email || !password) {
-            alert("Full name, email and password are required.");
-            return;
+      const full_name = document.getElementById("full_name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const role = document.getElementById("role").value; // already uppercase
+      const password = document.getElementById("password").value;
+      const confirm = document.getElementById("confirm_password").value;
+
+      if (password !== confirm) {
+        alert("Passwords do not match.");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://127.0.0.1:8000/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            full_name,
+            email,
+            phone,
+            password,
+            role,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          alert(data.detail || "Registration failed.");
+          return;
         }
 
-        if (password !== confirm_password) {
-            alert("Passwords do not match.");
-            return;
-        }
-
-        try {
-            const response = await fetch("http://127.0.0.1:8000/auth/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    full_name,
-                    email,
-                    phone,
-                    password,
-                    role
-                })
-            });
-
-            if (!response.ok) {
-                let msg = "Registration failed.";
-                try {
-                    const errorData = await response.json();
-                    if (errorData.detail) msg = errorData.detail;
-                } catch (_) {}
-                alert(msg);
-                return;
-            }
-
-            alert("Registration successful! Please login.");
-            window.location.href = "index.html";
-
-        } catch (error) {
-            console.error("Registration error:", error);
-            alert("Something went wrong. Please try again.");
-        }
+        alert("Registration successful! Please login.");
+        window.location.href = "index.html";
+      } catch (err) {
+        console.error(err);
+        alert("Could not connect to backend.");
+      }
     }
-</script>
-
+  </script>
 </body>
 </html>

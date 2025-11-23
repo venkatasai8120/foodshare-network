@@ -1,118 +1,257 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Donor Dashboard - FoodShare Network</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body { font-family: Arial; background: #eef2f3; margin: 0; padding: 0; }
-    .container { max-width: 900px; margin: auto; padding: 20px; }
-    h2 { color: #1f6f43; }
-    label { font-weight: bold; margin-top: 10px; display: block; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #eef2f3;
+    }
+    header {
+      background: #1f6f43;
+      color: #fff;
+      padding: 16px 24px;
+    }
+    header h1 {
+      margin: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 24px auto;
+      background: #fff;
+      padding: 24px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
     input, select, textarea {
-      width: 100%; padding: 10px; margin-top: 5px;
-      border: 1px solid #ccc; border-radius: 5px;
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 60px;
     }
     button {
-      margin-top: 15px; padding: 12px;
-      background: #1f6f43; color: white;
-      border: none; width: 100%; border-radius: 6px;
-      font-size: 16px; cursor: pointer;
+      margin-top: 18px;
+      width: 100%;
+      padding: 12px;
+      background: #1f6f43;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
     }
-    button:hover { background: #175735; }
-    footer { margin-top: 20px; text-align: center; opacity: 0.7; }
-    footer span { color: #1f6f43; font-weight: bold; }
+    button:hover {
+      background: #165132;
+    }
+    footer {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 13px;
+      color: #555;
+    }
+    footer span {
+      color: #1f6f43;
+      font-weight: bold;
+    }
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .top-row button {
+      width: auto;
+      padding: 8px 14px;
+      margin-top: 0;
+      font-size: 14px;
+      background: #b22222;
+    }
+    .top-row button:hover {
+      background: #8b0000;
+    }
+
+    /* Donation list styles */
+    .donation-card {
+      background: #f8f8f8;
+      border: 1px solid #ccc;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+    }
   </style>
 </head>
 <body>
+  <header>
+    <div class="top-row">
+      <h1>Donor Dashboard</h1>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </header>
 
-<div class="container">
-  <h2>Donate Food</h2>
+  <div class="container">
+    <h2>Create a Food Donation</h2>
 
-  <label>Category</label>
-  <select id="category">
-    <option value="1">Cooked Food</option>
-    <option value="2">Packaged Items</option>
-    <option value="3">Fruits & Vegetables</option>
-    <option value="4">Bakery Items</option>
-  </select>
+    <form id="donationForm" onsubmit="submitDonation(event)">
+      <label>Category</label>
+      <select id="category">
+        <option value="1">Cooked Food</option>
+        <option value="2">Packaged Items</option>
+        <option value="3">Fruits &amp; Vegetables</option>
+        <option value="4">Bakery Items</option>
+      </select>
 
-  <label>Description</label>
-  <textarea id="description"></textarea>
+      <label>Description</label>
+      <textarea id="description" placeholder="e.g., Fresh apples from today"></textarea>
 
-  <label>Quantity</label>
-  <input type="number" id="quantity">
+      <label>Quantity</label>
+      <input type="number" id="quantity" step="0.01" required />
 
-  <label>Unit</label>
-  <input type="text" id="unit" placeholder="kg, lbs, items">
+      <label>Unit</label>
+      <input type="text" id="unit" placeholder="kg, lbs, items, trays" required />
 
-  <label>Expires At</label>
-  <input type="datetime-local" id="expires_at">
+      <label>Expires At</label>
+      <input type="datetime-local" id="expires_at" required />
 
-  <label>Pickup Address</label>
-  <input type="text" id="pickup">
+      <label>Pickup Address</label>
+      <input type="text" id="pickup_address" required />
 
-  <label>City</label>
-  <input type="text" id="city">
+      <label>City</label>
+      <input type="text" id="city" required />
 
-  <label>State</label>
-  <input type="text" id="state">
+      <label>State</label>
+      <input type="text" id="state" required />
 
-  <label>Zip Code</label>
-  <input type="text" id="zip">
+      <label>Zip Code</label>
+      <input type="text" id="zip_code" required />
 
-  <button onclick="submitDonation()">Submit Donation</button>
+      <button type="submit">Submit Donation</button>
+    </form>
 
-  <footer>
-    Powered by <span>PVSR</span>
-  </footer>
-</div>
+    <hr>
+    <h2>My Recent Donations</h2>
 
-<script>
-async function submitDonation() {
-    const token = localStorage.getItem("token");
-    if (!token) {
+    <div id="donationList">
+      Loading donations...
+    </div>
+
+    <footer>
+      Powered by <span>PVSR</span>
+    </footer>
+  </div>
+
+  <script>
+    function ensureLoggedIn() {
+      const token = localStorage.getItem("token");
+      const role = (localStorage.getItem("role") || "").toUpperCase();
+      if (!token) {
         alert("Please login first.");
         window.location.href = "index.html";
         return;
+      }
+      if (role !== "DONOR") {
+        alert("This page is for Donors only.");
+        window.location.href = "index.html";
+      }
     }
 
-    const payload = {
+    async function loadDonations() {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/donations/available");
+        const donations = await response.json();
+
+        let html = "";
+        if (donations.length === 0) {
+          html = "<p>No donations yet.</p>";
+        } else {
+          donations.forEach(d => {
+            html += `
+              <div class="donation-card">
+                <strong>${d.description}</strong><br>
+                <b>Qty:</b> ${d.quantity} ${d.unit}<br>
+                <b>City:</b> ${d.city}, ${d.state}<br>
+                <b>Expires:</b> ${new Date(d.expires_at).toLocaleString()}<br>
+                <b>Status:</b> ${d.status}
+              </div>
+            `;
+          });
+        }
+
+        document.getElementById("donationList").innerHTML = html;
+
+      } catch (err) {
+        document.getElementById("donationList").innerHTML = "Error loading donations.";
+      }
+    }
+
+    async function submitDonation(event) {
+      event.preventDefault();
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Please login again.");
+        window.location.href = "index.html";
+        return;
+      }
+
+      const payload = {
         category_id: parseInt(document.getElementById("category").value),
         description: document.getElementById("description").value,
         quantity: parseFloat(document.getElementById("quantity").value),
         unit: document.getElementById("unit").value,
         expires_at: document.getElementById("expires_at").value,
-        pickup_address: document.getElementById("pickup").value,
+        pickup_address: document.getElementById("pickup_address").value,
         city: document.getElementById("city").value,
         state: document.getElementById("state").value,
-        zip_code: document.getElementById("zip").value
-    };
+        zip_code: document.getElementById("zip_code").value,
+      };
 
-    try {
+      try {
         const response = await fetch("http://127.0.0.1:8000/donations/create", {
-            method: "POST",
-            headers: {
-                "Authorization": "Bearer " + token,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify(payload),
         });
 
         const data = await response.json();
 
         if (!response.ok) {
-            alert(data.detail || "Error submitting donation.");
-            return;
+          alert(data.detail || "Error submitting donation.");
+          return;
         }
 
         alert("Donation submitted successfully!");
-        
-    } catch (error) {
-        console.error(error);
-        alert("Could not connect to backend.");
-    }
-}
-</script>
+        document.getElementById("donationForm").reset();
+        loadDonations();  // Refresh list after submit
 
+      } catch (err) {
+        alert("Could not connect to backend.");
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      window.location.href = "index.html";
+    }
+
+    // On page load:
+    ensureLoggedIn();
+    loadDonations();
+  </script>
 </body>
 </html>
